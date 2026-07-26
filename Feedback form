@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyber Hygiene Feedback | MVLU College</title>
+<style>
+:root{
+  --bg:#0a0e1a; --card:#121829; --card2:#1a2138;
+  --line:#26304d; --txt:#e8ecf6; --mut:#8b96b4;
+  --acc:#00e5c0; --acc2:#7c5cff; --err:#ff5d6c; --ok:#2ee6a8;
+  --rad:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  margin:0;padding:24px 14px 60px;
+  font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
+  background:var(--bg);color:var(--txt);
+  background-image:
+    radial-gradient(600px 400px at 10% -5%,rgba(124,92,255,.22),transparent 60%),
+    radial-gradient(700px 500px at 95% 0%,rgba(0,229,192,.16),transparent 60%);
+  background-attachment:fixed;
+}
+.wrap{max-width:780px;margin:auto}
+
+/* ---------- HEADER ---------- */
+.hero{
+  background:linear-gradient(135deg,#151c33,#0f1526);
+  border:1px solid var(--line);border-radius:20px;
+  padding:28px 26px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;opacity:.35;
+  background:repeating-linear-gradient(90deg,transparent 0 38px,rgba(0,229,192,.06) 38px 39px),
+             repeating-linear-gradient(0deg,transparent 0 38px,rgba(0,229,192,.06) 38px 39px);
+}
+.hero>*{position:relative}
+.badge{
+  display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;
+  letter-spacing:.8px;color:var(--acc);background:rgba(0,229,192,.1);
+  border:1px solid rgba(0,229,192,.3);padding:6px 13px;border-radius:99px;
+}
+h1{font-size:26px;line-height:1.25;margin:16px 0 8px;
+   background:linear-gradient(90deg,#fff,#9fe8dd);-webkit-background-clip:text;
+   background-clip:text;color:transparent}
+.sub{color:var(--mut);font-size:14.5px;line-height:1.6;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{font-size:12px;background:var(--card2);border:1px solid var(--line);
+      color:#b9c4e0;padding:6px 12px;border-radius:8px}
+
+/* ---------- PROGRESS ---------- */
+.pbar{position:sticky;top:0;z-index:20;margin:18px 0 14px;
+      background:rgba(10,14,26,.92);backdrop-filter:blur(8px);
+      padding:12px 4px;border-radius:12px}
+.ptrack{height:7px;background:var(--card2);border-radius:99px;overflow:hidden}
+.pfill{height:100%;width:0;border-radius:99px;transition:width .35s ease;
+       background:linear-gradient(90deg,var(--acc2),var(--acc))}
+.pmeta{display:flex;justify-content:space-between;font-size:12px;
+       color:var(--mut);margin-top:7px;font-weight:600}
+
+/* ---------- CARD / STEPS ---------- */
+.card{background:var(--card);border:1px solid var(--line);
+      border-radius:20px;padding:26px 24px;margin-top:14px}
+.step{display:none;animation:fade .35s ease}
+.step.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.stitle{display:flex;align-items:center;gap:11px;margin-bottom:6px}
+.snum{width:30px;height:30px;flex:none;border-radius:9px;display:grid;place-items:center;
+      font-size:13px;font-weight:800;color:#04121a;
+      background:linear-gradient(135deg,var(--acc),#5ce1d0)}
+.stitle h2{font-size:18px;margin:0}
+.sdesc{color:var(--mut);font-size:13.5px;margin:0 0 18px 41px}
+
+/* ---------- QUESTION ---------- */
+.q{padding:16px 0;border-bottom:1px dashed var(--line)}
+.q:last-of-type{border-bottom:none}
+.q>label.qt{display:block;font-weight:600;font-size:15px;margin-bottom:11px;line-height:1.5}
+.req{color:var(--err);margin-left:3px}
+.hint{display:block;font-weight:400;font-size:12.5px;color:var(--mut);margin-top:3px}
+input[type=text],input[type=email],textarea,select{
+  width:100%;padding:12px 14px;background:var(--card2);color:var(--txt);
+  border:1px solid var(--line);border-radius:11px;font-size:15px;
+  font-family:inherit;outline:none;transition:.2s;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(0,229,192,.13)}
+textarea{resize:vertical;min-height:88px}
+select{cursor:pointer}
+option{background:#121829}
+
+/* pill options */
+.opts{display:flex;flex-wrap:wrap;gap:9px}
+.opts.col{flex-direction:column}
+.pill{position:relative;display:flex;align-items:center;gap:9px;cursor:pointer;
+      padding:11px 15px;background:var(--card2);border:1.5px solid var(--line);
+      border-radius:11px;font-size:14px;transition:.18s;user-select:none}
+.pill:hover{border-color:#3d4a75;transform:translateY(-1px)}
+.pill input{position:absolute;opacity:0;pointer-events:none}
+.dot{width:17px;height:17px;flex:none;border:2px solid #4b5885;border-radius:50%;
+     display:grid;place-items:center;transition:.18s}
+.sq{border-radius:5px}
+.dot::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--acc);
+            transform:scale(0);transition:.18s}
+.sq::after{border-radius:2px}
+.pill input:checked~.dot{border-color:var(--acc);background:rgba(0,229,192,.13)}
+.pill input:checked~.dot::after{transform:scale(1)}
+.pill:has(input:checked){border-color:var(--acc);background:rgba(0,229,192,.09)}
+
+/* ---------- MATRIX ---------- */
+.legend{font-size:12px;color:var(--mut);margin-bottom:12px}
+.mrow{background:var(--card2);border:1px solid var(--line);border-radius:12px;
+      padding:12px 14px;margin-bottom:10px}
+.mrow .ml{font-size:14px;margin-bottom:10px;display:block}
+.mopts{display:flex;gap:7px;flex-wrap:wrap}
+.mo{flex:1;min-width:52px;position:relative}
+.mo input{position:absolute;opacity:0;pointer-events:none}
+.mo span{display:block;text-align:center;padding:9px 4px;border-radius:9px;
+         background:#0e1425;border:1.5px solid var(--line);font-size:13.5px;
+         font-weight:600;cursor:pointer;transition:.18s}
+.mo span:hover{border-color:#4a578a}
+.mo input:checked+span{background:linear-gradient(135deg,var(--acc),#4fd8c4);
+        border-color:var(--acc);color:#062018;font-weight:800}
+
+/* ---------- STARS ---------- */
+.stars{display:flex;gap:8px;font-size:36px;line-height:1}
+.stars i{cursor:pointer;color:#39456e;transition:transform .15s,color .15s;font-style:normal}
+.stars i:hover{transform:scale(1.18)}
+.stars i.lit{color:#ffc93c;text-shadow:0 0 14px rgba(255,201,60,.5)}
+.stxt{font-size:13px;color:var(--acc);margin-top:8px;font-weight:600;min-height:18px}
+
+/* ---------- NPS ---------- */
+.nps{display:flex;gap:5px;flex-wrap:wrap}
+.nps label{flex:1;min-width:38px;position:relative}
+.nps input{position:absolute;opacity:0}
+.nps span{display:block;text-align:center;padding:10px 0;border-radius:9px;
+          background:var(--card2);border:1.5px solid var(--line);font-size:13px;
+          font-weight:700;cursor:pointer;transition:.15s}
+.nps input:checked+span{background:linear-gradient(135deg,var(--acc2),#a08cff);
+          border-color:var(--acc2);color:#fff}
+.npsend{display:flex;justify-content:space-between;font-size:11.5px;color:var(--mut);margin-top:7px}
+
+.err{color:var(--err);font-size:12.5px;margin-top:8px;display:none;font-weight:600}
+.q.bad .err{display:block}
+.q.bad{background:rgba(255,93,108,.05);border-radius:10px;
+       box-shadow:0 0 0 1px rgba(255,93,108,.25);padding:14px;margin:6px 0}
+
+/* ---------- NAV ---------- */
+.nav{display:flex;gap:11px;margin-top:26px}
+button{font-family:inherit;font-size:15px;font-weight:700;border:none;
+       border-radius:12px;padding:14px 26px;cursor:pointer;transition:.2s}
+.btn{flex:1;background:linear-gradient(135deg,var(--acc2),var(--acc));color:#06121c}
+.btn:hover{filter:brightness(1.12);transform:translateY(-2px);
+           box-shadow:0 8px 22px rgba(0,229,192,.24)}
+.ghost{background:transparent;border:1.5px solid var(--line);color:var(--mut);flex:0 0 auto}
+.ghost:hover{border-color:var(--acc);color:var(--acc)}
+
+/* ---------- THANK YOU ---------- */
+#thanks{display:none;text-align:center;padding:44px 22px}
+#thanks.on{display:block;animation:fade .4s}
+.tick{width:88px;height:88px;margin:0 auto 20px;border-radius:50%;display:grid;
+      place-items:center;font-size:44px;background:rgba(46,230,168,.12);
+      border:2px solid var(--ok);animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+#thanks h2{font-size:24px;margin:0 0 10px}
+.quote{margin:22px auto 0;max-width:430px;padding:16px;border-radius:13px;
+       background:var(--card2);border:1px dashed var(--acc);color:var(--acc);
+       font-weight:700;font-size:14.5px}
+
+/* ---------- ADMIN ---------- */
+#admin{display:none;position:fixed;inset:0;z-index:99;background:rgba(4,7,15,.9);
+       backdrop-filter:blur(6px);padding:26px 14px;overflow:auto}
+#admin.on{display:block}
+.abox{max-width:900px;margin:auto;background:var(--card);border:1px solid var(--line);
+      border-radius:18px;padding:24px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:14px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;white-space:nowrap}
+th{background:var(--card2);color:var(--acc);position:sticky;top:0}
+.stat{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.sbox{flex:1;min-width:120px;background:var(--card2);border:1px solid var(--line);
+      border-radius:12px;padding:14px;text-align:center}
+.sbox b{display:block;font-size:24px;color:var(--acc)}
+.sbox small{color:var(--mut);font-size:11.5px}
+.foot{text-align:center;color:#4d5878;font-size:12px;margin-top:22px;line-height:1.7}
+.foot span{cursor:pointer}
+@media(max-width:520px){
+  body{padding:14px 10px 40px} h1{font-size:21px}
+  .card,.hero{padding:20px 16px} .sdesc{margin-left:0}
+  .stars{font-size:31px} .nav{flex-wrap:wrap}
+}
+@media print{
+  body{background:#fff;color:#000} .pbar,.nav,.hero::before{display:none}
+  .step{display:block!important} .card,.hero{border:1px solid #999;background:#fff}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ HEADER ============ -->
+  <div class="hero">
+    <span class="badge">🔐 FIELD PROJECT 2025–26</span>
+    <h1>Cyber Hygiene Practices Among College Students &amp; Faculty</h1>
+    <p class="sub">Awareness Session conducted by the students of <b>M.V.L.U. College</b> at
+      <b>St. Michael's College</b>. Aapka feedback sirf academic purpose ke liye use hoga
+      aur confidential rahega. ⏱️ Sirf 2 minute.</p>
+    <div class="chips">
+      <span class="chip">🎓 Host: St. Michael's College</span>
+      <span class="chip">🏫 By: MVLU College</span>
+      <span class="chip">🔒 100% Confidential</span>
+    </div>
+  </div>
+
+  <!-- ============ PROGRESS ============ -->
+  <div class="pbar">
+    <div class="ptrack"><div class="pfill" id="pf"></div></div>
+    <div class="pmeta"><span id="plbl">Step 1 of 5 — Basic Details</span><span id="ppct">0%</span></div>
+  </div>
+
+  <div class="card">
+  <form id="form" novalidate>
+
+    <!-- ===== STEP 1 ===== -->
+    <section class="step on">
+      <div class="stitle"><div class="snum">1</div><h2>Basic Details</h2></div>
+      <p class="sdesc">Research ke liye basic information.</p>
+
+      <div class="q" data-req><label class="qt">Full Name <span class="req">*</span></label>
+        <input type="text" name="Name" placeholder="Your full name">
+        <div class="err">⚠️ Please enter your name</div></div>
+
+      <div class="q" data-req><label class="qt">You are a <span class="req">*</span></label>
+        <div class="opts">
+          <label class="pill"><input type="radio" name="Role" value="Student"><i class="dot"></i>Student</label>
+          <label class="pill"><input type="radio" name="Role" value="Faculty"><i class="dot"></i>Faculty</label>
+          <label class="pill"><input type="radio" name="Role" value="Non-teaching Staff"><i class="dot"></i>Non-teaching Staff</label>
+        </div><div class="err">⚠️ Please select one option</div></div>
+
+      <div class="q" data-req><label class="qt">Class / Department <span class="req">*</span></label>
+        <input type="text" name="Class" placeholder="e.g. SYBSc IT / Commerce Dept.">
+        <div class="err">⚠️ This field is required</div></div>
+
+      <div class="q"><label class="qt">Age Group</label>
+        <select name="Age">
+          <option value="">Select…</option><option>Below 18</option>
+          <option>18 – 21</option><option>22 – 25</option><option>Above 25</option>
+        </select></div>
+    </section>
+
+    <!-- ===== STEP 2 ===== -->
+    <section class="step">
+      <div class="stitle"><div class="snum">2</div><h2>Rate the Session</h2></div>
+      <p class="sdesc">Har point ko 1 se 5 tak rate karein.</p>
+      <p class="legend">1 = Poor &nbsp;•&nbsp; 3 = Average &nbsp;•&nbsp; 5 = Excellent</p>
+
+      <div id="matrix"></div>
+
+      <div class="q" data-req><label class="qt">Overall Presentation Rating <span class="req">*</span>
+        <span class="hint">Stars par click karein</span></label>
+        <div class="stars" id="stars">
+          <i data-v="1">★</i><i data-v="2">★</i><i data-v="3">★</i><i data-v="4">★</i><i data-v="5">★</i>
+        </div>
+        <div class="stxt" id="stxt"></div>
+        <input type="hidden" name="Overall Stars" id="starVal">
+        <div class="err">⚠️ Please give a star rating</div></div>
+    </section>
+
+    <!-- ===== STEP 3 ===== -->
+    <section class="step">
+      <div class="stitle"><div class="snum">3</div><h2>Knowledge: Before vs After</h2></div>
+      <p class="sdesc">Ye section session ka <b>real impact</b> measure karta hai. ⭐</p>
+
+      <div class="q" data-req><label class="qt">Session se <b>PEHLE</b> Cyber Hygiene ki jaankari <span class="req">*</span></label>
+        <div class="opts">
+          <label class="pill"><input type="radio" name="Knowledge Before" value="1 - None"><i class="dot"></i>None</label>
+          <label class="pill"><input type="radio" name="Knowledge Before" value="2 - Very Little"><i class="dot"></i>Very Little</label>
+          <label class="pill"><input type="radio" name="Knowledge Before" value="3 - Average"><i class="dot"></i>Average</label>
+          <label class="pill"><input type="radio" name="Knowledge Before" value="4 - Good"><i class="dot"></i>Good</label>
+          <label class="pill"><input type="radio" name="Knowledge Before" value="5 - Excellent"><i class="dot"></i>Excellent</label>
+        </div><div class="err">⚠️ Please select one option</div></div>
+
+      <div class="q" data-req><label class="qt">Session ke <b>BAAD</b> aapki jaankari <span class="req">*</span></label>
+        <div class="opts">
+          <label class="pill"><input type="radio" name="Knowledge After" value="1 - None"><i class="dot"></i>None</label>
+          <label class="pill"><input type="radio" name="Knowledge After" value="2 - Very Little"><i class="dot"></i>Very Little</label>
+          <label class="pill"><input type="radio" name="Knowledge After" value="3 - Average"><i class="dot"></i>Average</label>
+          <label class="pill"><input type="radio" name="Knowledge After" value="4 - Good"><i class="dot"></i>Good</label>
+          <label class="pill"><input type="radio" name="Knowledge After" value="5 - Excellent"><i class="dot"></i>Excellent</label>
+        </div><div class="err">⚠️ Please select one option</div></div>
+
+      <div class="q" data-req><label class="qt">Which topics did you understand BEST? <span class="req">*</span>
+        <span class="hint">Ek se zyada select kar sakte hain</span></label>
+        <div class="opts">
+          <label class="pill"><input type="checkbox" name="Topics" value="Strong Passwords"><i class="dot sq"></i>🔑 Strong Passwords</label>
+          <label class="pill"><input type="checkbox" name="Topics" value="2FA / OTP"><i class="dot sq"></i>📲 Two-Factor Auth (2FA)</label>
+          <label class="pill"><input type="checkbox" name="Topics" value="Phishing & Email Scams"><i class="dot sq"></i>🎣 Phishing &amp; Email Scams</label>
+          <label class="pill"><input type="checkbox" name="Topics" value="Social Media Safety"><i class="dot sq"></i>📱 Social Media Safety</label>
+          <label class="pill"><input type="checkbox" name="Topics" value="Public WiFi Risks"><i class="dot sq"></i>📶 Public Wi-Fi Risks</label>
+          <label class="pill"><input type="checkbox" name="Topics" value="UPI / Payment Fraud"><i class="dot sq"></i>💳 UPI / Payment Fraud</label>
+          <label class="pill"><input type="checkbox" name="Topics" value="Data Privacy & Backup"><i class="dot sq"></i>🗄️ Data Privacy &amp; Backup</label>
+          <label class="pill"><input type="checkbox" name="Topics" value="Cyberbullying"><i class="dot sq"></i>🚫 Cyberbullying</label>
+          <label class="pill"><input type="checkbox" name="Topics" value="Reporting Cybercrime 1930"><i class="dot sq"></i>🚨 Reporting Cybercrime (1930)</label>
+        </div><div class="err">⚠️ Please select at least one topic</div></div>
+    </section>
+
+    <!-- ===== STEP 4 ===== -->
+    <section class="step">
+      <div class="stitle"><div class="snum">4</div><h2>Action &amp; Quick Quiz</h2></div>
+      <p class="sdesc">Kya aap ye practices apnayenge? Aur ek chhota sa quiz 😊</p>
+
+      <p class="legend">Will you follow these practices?</p>
+      <div id="behave"></div>
+
+      <div class="q" data-req><label class="qt">Kya aap kabhi cyber fraud / scam / hacking ka shikaar hue hain? <span class="req">*</span></label>
+        <div class="opts">
+          <label class="pill"><input type="radio" name="Faced Fraud" value="Yes"><i class="dot"></i>Yes</label>
+          <label class="pill"><input type="radio" name="Faced Fraud" value="No"><i class="dot"></i>No</label>
+          <label class="pill"><input type="radio" name="Faced Fraud" value="Almost / Near-miss"><i class="dot"></i>Almost (near-miss)</label>
+          <label class="pill"><input type="radio" name="Faced Fraud" value="Prefer not to say"><i class="dot"></i>Prefer not to say</label>
+        </div><div class="err">⚠️ Please select one option</div></div>
+
+      <div class="q" data-req><label class="qt">Q. India ka National Cyber Crime Helpline number? <span class="req">*</span></label>
+        <div class="opts">
+          <label class="pill"><input type="radio" name="Quiz Helpline" value="100"><i class="dot"></i>100</label>
+          <label class="pill"><input type="radio" name="Quiz Helpline" value="1930"><i class="dot"></i>1930</label>
+          <label class="pill"><input type="radio" name="Quiz Helpline" value="181"><i class="dot"></i>181</label>
+          <label class="pill"><input type="radio" name="Quiz Helpline" value="1091"><i class="dot"></i>1091</label>
+        </div><div class="err">⚠️ Please attempt this question</div></div>
+
+      <div class="q" data-req><label class="qt">Q. Kya bank kabhi aapse OTP / PIN maangta hai? <span class="req">*</span></label>
+        <div class="opts">
+          <label class="pill"><input type="radio" name="Quiz OTP" value="Yes"><i class="dot"></i>Yes</label>
+          <label class="pill"><input type="radio" name="Quiz OTP" value="No"><i class="dot"></i>No, never</label>
+          <label class="pill"><input type="radio" name="Quiz OTP" value="Only on call"><i class="dot"></i>Only on call</label>
+        </div><div class="err">⚠️ Please attempt this question</div></div>
+
+      <div class="q" data-req><label class="qt">Is session ko doosron ko recommend karenge? <span class="req">*</span></label>
+        <div class="nps" id="nps"></div>
+        <div class="npsend"><span>0 – Not at all</span><span>Definitely – 10</span></div>
+        <div class="err">⚠️ Please select a score</div></div>
+    </section>
+
+    <!-- ===== STEP 5 ===== -->
+    <section class="step">
+      <div class="stitle"><div class="snum">5</div><h2>Your Valuable Feedback</h2></div>
+      <p class="sdesc">Aapke shabd humare project ki jaan hain 🙏</p>
+
+      <div class="q" data-req><label class="qt">Is session se aapne kya seekha? <span class="req">*</span></label>
+        <textarea name="What You Learned" placeholder="Aapki learning yahan likhein…"></textarea>
+        <div class="err">⚠️ Please write your answer</div></div>
+
+      <div class="q"><label class="qt">Hamari team ki performance kaisi rahi?</label>
+        <textarea name="Team Performance" placeholder="Presenters ke baare 
